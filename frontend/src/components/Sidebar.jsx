@@ -1,6 +1,6 @@
 import { Layers, Thermometer, Wind, Droplets, Activity, Share2, RefreshCw, Snowflake, Flame, Waves, Fish, Navigation, AlertTriangle, Leaf } from 'lucide-react'
 
-export default function Sidebar({ filtros, setFiltros, onRefresh, syncing, onShare }) {
+export default function Sidebar({ filtros, setFiltros, onRefresh, syncing, onShare, fontSize, setFontSize }) {
   
   const toggleFilter = (key) => {
     setFiltros(prev => ({...prev, [key]: !prev[key]}))
@@ -47,6 +47,31 @@ export default function Sidebar({ filtros, setFiltros, onRefresh, syncing, onSha
           >
             <Share2 size={16} />
           </button>
+        </div>
+
+        {/* Selector de tamaño de letra */}
+        <div className="mt-4 pt-3 border-t border-slate-850/60">
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+            Tamaño de Datos (Números)
+          </label>
+          <div className="grid grid-cols-4 gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800/40">
+            {['12px', '14px', '18px', '24px'].map((size, index) => {
+              const labels = ['Chico', 'Medio', 'Grande', 'Gigante'];
+              const isActive = fontSize === size;
+              return (
+                <button
+                  key={size}
+                  onClick={() => setFontSize(size)}
+                  className={`py-1 px-1.5 rounded-lg text-[10px] sm:text-xs font-semibold transition-all duration-200
+                    ${isActive 
+                      ? 'bg-blue-600/90 text-white shadow-md font-bold' 
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/40'}`}
+                >
+                  {labels[index]}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 

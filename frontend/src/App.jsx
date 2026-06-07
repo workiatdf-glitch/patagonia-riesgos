@@ -6,6 +6,10 @@ import Sidebar from './components/Sidebar'
 const API_URL = 'http://localhost:8002/api';
 
 function App() {
+  const [fontSize, setFontSize] = useState(() => {
+    return localStorage.getItem('fontSize') || '14px';
+  });
+
   const [filtros, setFiltros] = useState({
     sismos: true,
     temperatura: false,
@@ -28,6 +32,10 @@ function App() {
   const [center, setCenter] = useState([-50.0, -70.0]); // Patagonia
   // timelineDay: 0 is today, -7 is 7 days ago, +7 is 7 days ahead
   const [timelineDay, setTimelineDay] = useState(0); 
+
+  useEffect(() => {
+    localStorage.setItem('fontSize', fontSize);
+  }, [fontSize]);
 
   const fetchData = async () => {
     try {
@@ -69,7 +77,10 @@ function App() {
   }, [])
 
   return (
-    <div className="w-full h-screen bg-slate-900 overflow-hidden relative font-sans text-slate-100">
+    <div 
+      className="w-full h-screen bg-slate-900 overflow-hidden relative font-sans text-slate-100"
+      style={{ '--tooltip-font-size': fontSize }}
+    >
       
       <Sidebar 
         filtros={filtros} 
@@ -77,6 +88,8 @@ function App() {
         onRefresh={handleRefresh} 
         syncing={syncing}
         onShare={handleShare}
+        fontSize={fontSize}
+        setFontSize={setFontSize}
       />
 
       <div className="absolute inset-0 z-0">
@@ -125,6 +138,10 @@ function App() {
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         .leaflet-container { background: #0f172a; }
+        .leaflet-tooltip {
+          font-size: var(--tooltip-font-size, 14px) !important;
+          line-height: 1.2 !important;
+        }
       `}} />
     </div>
   )
