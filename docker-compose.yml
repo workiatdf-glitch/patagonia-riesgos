@@ -27,8 +27,10 @@ services:
     environment:
       DATABASE_URL: postgresql://patagonia_user:patagonia_password@db:5432/patagonia_db
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-    volumes:
-      - ./backend:/app
+    # Se comenta el volumen para evitar el error de deadlock (Resource deadlock would occur)
+    # de VirtioFS en macOS en carpetas sincronizadas con iCloud (~/Documents).
+    # volumes:
+    #   - ./backend:/app
     depends_on:
       db:
         condition: service_healthy
